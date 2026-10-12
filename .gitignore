@@ -1,0 +1,9 @@
+# Machine-local path overrides for the offline build tools (see tools/local-paths.mjs).
+.dsh-local.json
+
+# Scratch output: the test build and the typecheck's generated tsconfig.
+.tmp-test/
+.tsconfig.check.json
+
+# Never commit an install.
+node_modules/

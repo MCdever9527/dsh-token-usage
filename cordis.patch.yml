@@ -1,0 +1,19 @@
+# dsh-token-usage bundle patch.
+#
+# One row at the profile root. The host half scans every stored session log
+# (archived included) through the session-persistence seam, folds provider
+# reported usage with the same replace/retry semantics as the shipped
+# tokenUsage projection, and publishes the aggregate as JSON under
+# $DSH_HOME/cache/dsh-token-usage/stats.json. The browser half renders it on a
+# Settings page and follows file changes for live updates.
+#
+# | Field | Default | Meaning |
+# | ----- | ------- | ------- |
+# | enabled | true | Master switch; off leaves the settings page showing the last snapshot or a mount notice. |
+# | pollSeconds | 30 | How often the host re-checks stored sessions for new usage and rescans changed ones. |
+- insert:
+    - id: token-usage
+      name: dsh-token-usage
+      config:
+        enabled: true
+        pollSeconds: 30
