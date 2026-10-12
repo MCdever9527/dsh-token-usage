@@ -2,6 +2,7 @@
   "name": "dsh-token-usage",
   "version": "1.1.0",
   "private": true,
+  "license": "MIT",
   "description": "Token usage statistics for DSH: scan every stored session log (including archived ones) and report provider-by-model token totals on a Settings page, kept live through the workspace-files watch stream.",
   "type": "module",
   "main": "lib/index.js",
