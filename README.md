@@ -68,23 +68,22 @@
 ## 开发
 
 ```sh
-node build.mjs --tests       # 构建 lib/index.js（宿主）与 lib/client.js（浏览器）
-node tools/run-tests.mjs     # 单测（node:test，含中途换模型/跨提供商切换用例）
-node tools/smoke-client.mjs  # 浏览器 bundle 冒烟：座位注册、hook observable、读写接线
-node tools/smoke-host.mjs    # 宿主冒烟：Electron Node 模式装载 + 合成语料端到端扫描发布
-npm test                     # 以上全部
+node build.mjs          # 构建 lib/index.js（宿主）与 lib/client.js（浏览器）
+node tools/tsc.mjs      # 类型检查
 ```
 
 本包不安装 esbuild / typescript / `@types`，开发时从**同级检出**的 `node_modules` 借用。这些路径因机器而异，
 因此放在仓库根一个**不纳入版本控制的** `.dsh-local.json`（可选）：
 
 ```json
-{ "moduleRoots": ["D:/some/checkout/node_modules"], "desktopExe": "D:/some/install/DeepSeek Harness.exe" }
+{ "moduleRoots": ["D:/some/checkout/node_modules"] }
 ```
 
-两个字段都可选，文件不存在就等于没有额外候选；环境变量 `DSH_ESBUILD` / `DSH_TSC` / `DSH_DESKTOP_EXE` 优先级更高。
-全新克隆不需要这个文件：先 `npm install`，工具链就走本包自己的 `node_modules`。找不到桌面端可执行文件时，
-`smoke-host` 会打印跳过原因并以 0 退出。
+字段可选，文件不存在就等于没有额外候选；环境变量 `DSH_ESBUILD` / `DSH_TSC` 优先级更高。
+全新克隆不需要这个文件：先 `npm install`，工具链就走本包自己的 `node_modules`。
+
+单测（`tests/*.spec.ts`）与冒烟脚本（`tools/run-tests.mjs`、`tools/smoke-*.mjs`）是**本地专用资产**，
+不随本仓库发布，所以本仓库里没有 `npm test`；`node build.mjs --tests` 在没有 `tests/` 的检出里会直接跳过。
 
 ### 结构
 

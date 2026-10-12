@@ -24,7 +24,13 @@ import { fileURLToPath } from 'node:url'
 import { localModuleRoots } from './tools/local-paths.mjs'
 
 const root = dirname(fileURLToPath(import.meta.url))
-const withTests = process.argv.includes('--tests')
+// The test suite is a local-only asset and is not published with this package,
+// so `--tests` in a checkout that has none is a skip, not a failure.
+const testsRequested = process.argv.includes('--tests')
+const withTests = testsRequested && existsSync(join(root, 'tests'))
+if (testsRequested && !withTests) {
+  console.log('build: --tests requested, but tests/ is not in this checkout; skipping the test build')
+}
 
 /** Platform packages esbuild publishes its executable in. */
 const PLATFORM_PACKAGES = [

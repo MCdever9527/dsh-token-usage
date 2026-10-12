@@ -1,6 +1,16 @@
 # Machine-local path overrides for the offline build tools (see tools/local-paths.mjs).
 .dsh-local.json
 
+# Local-only assets: kept in the working copy, deliberately not published.
+# The test suite, the smoke scripts and the memory-store pointer describe this
+# machine's checkout, so a published clone has no use for them. Do not re-add
+# them to version control; `node build.mjs --tests` skips when tests/ is absent.
+tests/
+.obsidian-mem
+tools/run-tests.mjs
+tools/smoke-client.mjs
+tools/smoke-host.mjs
+
 # Scratch output: the test build and the typecheck's generated tsconfig.
 .tmp-test/
 .tsconfig.check.json

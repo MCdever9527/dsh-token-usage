@@ -32,10 +32,6 @@
   },
   "scripts": {
     "build": "node build.mjs",
-    "build:tests": "node build.mjs --tests",
-    "test": "node build.mjs --tests && node tools/run-tests.mjs && node tools/smoke-client.mjs && node tools/smoke-host.mjs",
-    "test:client": "node tools/smoke-client.mjs",
-    "test:host": "node tools/smoke-host.mjs",
     "typecheck": "node tools/tsc.mjs"
   },
   "files": [
