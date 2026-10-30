@@ -518,8 +518,14 @@ export function apply(ctx: PluginContext, config: unknown): void {
         const failures: string[] = []
         for (const id of ids) {
           if (stopped) return
-          let revision = revisions.get(id)
-          if (revision === undefined) revision = await fileRevision(sessionsRoot, id)
+          // Prefer the artifact's OWN fingerprint over the seam's revision:
+          // for a historical (pre-v4) generation the seam folds in a corpus-wide
+          // hash, so a single append anywhere invalidated every legacy session
+          // and forced a full re-fold each sweep (measured: 35 re-folds, ~5s of
+          // unbroken synchronous zstd decode per sweep). The artifact
+          // fingerprint changes only when that session itself changes.
+          let revision = await fileRevision(sessionsRoot, id)
+          if (revision === undefined) revision = revisions.get(id)
           if (revision === undefined) revision = 'unknown'
           const known = sessions.get(id)
           if (known !== undefined && known.revision === revision) {
